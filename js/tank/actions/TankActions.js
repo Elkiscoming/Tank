@@ -15,7 +15,18 @@ var TankActions = {
             actionType: TankConstants.UPDATE
         });
     },
-
+    keyDown: function(keyCode) {
+        AppDispatcher.handleViewAction({
+            actionType: TankConstants.KEY_DOWN,
+            keyCode: keyCode - 37
+        });
+    },
+    keyUp: function(keyCode) {
+        AppDispatcher.handleViewAction({
+            actionType: TankConstants.KEY_UP,
+            keyCode: keyCode - 37
+        });
+    }
 };
 
 module.exports = TankActions;

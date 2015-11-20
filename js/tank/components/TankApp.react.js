@@ -2,22 +2,29 @@
  * Created by erfan on 11/19/15.
  */
 var React = require('react');
+var Tank = require('./Tank.react');
 var TankStore = require('../stores/TankStore');
+var TankActions = require('../actions/TankActions');
 
-function getTodoState() {
+function getTankState() {
     return {
-        allTodos: TankStore.getAll()
+        allTanks: TankStore.getAll()
     };
 }
 
 var TankApp = React.createClass({
 
     getInitialState: function() {
-        return getTodoState();
+        return getTankState();
     },
 
     componentDidMount: function() {
+        $('.tank-trouble').focus();
+        console.log('focus');
         TankStore.addChangeListener(this._onChange);
+        interval = setInterval(function(){
+            TankActions.update();
+        }, 50);
     },
 
     componentWillUnmount: function() {
@@ -28,17 +35,36 @@ var TankApp = React.createClass({
      * @return {object}
      */
     render: function() {
+        var allTanks = this.state.allTanks;
+        var tanks = [];
+        for(var index in allTanks){
+            tanks[index] = (
+                <Tank position={allTanks[index].position} angle={allTanks[index].angle} />
+            );
+        }
         return (
-            <div>
+            <div className="tank-trouble" onKeyDown={this._onKeyDown} onKeyUp={this._onKeyUp} tabIndex="0">
                 <svg width="1000" height="1000">
-                    <circle cx="50" cy="50" r="20" stroke="red" stroke-width="4" fill="white"/>
+                    {tanks}
                 </svg>
             </div>
         );
     },
 
     _onChange: function() {
-        this.setState(getTodoState());
+        this.setState(getTankState());
+    },
+
+    _onKeyDown: function(event) {
+        if(event.keyCode >= 37 && event.keyCode <= 40)
+            event.preventDefault();
+        TankActions.keyDown(event.keyCode);
+    },
+
+    _onKeyUp: function(event) {
+        if(event.keyCode >= 37 && event.keyCode <= 40)
+            event.preventDefault();
+        TankActions.keyUp(event.keyCode);
     }
 
 });
