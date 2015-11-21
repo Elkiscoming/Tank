@@ -18,6 +18,17 @@ var _tanks = [
         angle: 0,
         maxV: 1,
         dir : 0
+    },
+
+    {
+        id: 1,
+        position: {
+            x: 550,
+            y: 50
+        },
+        angle: 180,
+        maxV: 1,
+        dir : 0
     }
 ]; // collection of tanks
 
@@ -35,6 +46,12 @@ function createBullet(playerIndex){
     };
 }
 
+function ai(playerIndex){
+    _tanks[playerIndex].dir = Math.floor((Math.random() * 16) + 1);
+    if(Math.floor((Math.random() * 25)) === 0){
+        createBullet(playerIndex);
+    }
+}
 var TankStore = assign({}, EventEmitter.prototype, {
 
     /**
@@ -71,29 +88,36 @@ var TankStore = assign({}, EventEmitter.prototype, {
         var tank = _tanks[0];
         var dt = 1;
         var number;
+        var index;
         switch(action.actionType) {
             case TankConstants.UPDATE:
                 var angle = tank.angle / 180 * Math.PI;
-                if((tank.dir >> 0) % 2 === 1) {
-                    tank.angle -= dt;
+                for(index in _tanks) {
+                    tank = _tanks[index];
+                    if ((tank.dir >> 0) % 2 === 1) {
+                        tank.angle -= dt;
+                    }
+                    if ((tank.dir >> 2) % 2 === 1) {
+                        tank.angle += dt;
+                    }
+                    if ((tank.dir >> 1) % 2 === 1) {
+                        tank.position.x += tank.maxV * Math.cos(angle) * dt;
+                        tank.position.y += tank.maxV * Math.sin(angle) * dt;
+                    }
+                    if ((tank.dir >> 3) % 2 === 1) {
+                        tank.position.x -= tank.maxV * Math.cos(angle) * dt;
+                        tank.position.y -= tank.maxV * Math.sin(angle) * dt;
+                    }
                 }
-                if((tank.dir >> 2) % 2 === 1) {
-                    tank.angle += dt;
-                }
-                if((tank.dir >> 1) % 2 === 1){
-                    tank.position.x += tank.maxV * Math.cos(angle) * dt;
-                    tank.position.y += tank.maxV * Math.sin(angle) * dt;
-                }
-                if((tank.dir >> 3) % 2 === 1){
-                    tank.position.x -= tank.maxV * Math.cos(angle) * dt;
-                    tank.position.y -= tank.maxV * Math.sin(angle) * dt;
-                }
-
-                for(var index in _bullets){
+                for(index in _bullets){
                     var bulletAngle = _bullets[index].angle / 180 * Math.PI;
-                    console.log(bulletAngle);
                     _bullets[index].position.x += 2 * tank.maxV * Math.cos(bulletAngle) * dt;
                     _bullets[index].position.y += 2 * tank.maxV * Math.sin(bulletAngle) * dt;
+                }
+                for(index in _tanks){
+                    if(parseInt(index) !== 0){
+                        ai(index);
+                    }
                 }
                 TankStore.emitChange();
                 break;
