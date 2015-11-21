@@ -43,7 +43,7 @@ var TankApp = React.createClass({
         var bullets = [];
         for(var index in allTanks){
             tanks[index] = (
-                <Tank position={allTanks[index].position} angle={allTanks[index].angle} />
+                <Tank position={allTanks[index].position} angle={allTanks[index].angle} isDead={allTanks[index].isDead}/>
             );
         }
         var counter = 0;

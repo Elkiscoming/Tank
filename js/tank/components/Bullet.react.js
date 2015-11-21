@@ -4,6 +4,7 @@
 
 var React = require('react');
 var TankStore = require('../stores/TankStore');
+var TankConstants = require('../constants/TankConstants');
 
 Bullet = React.createClass({
 
@@ -24,7 +25,7 @@ Bullet = React.createClass({
         var position = this.props.position;
         return (
             <g>
-                <circle cx={position.x} cy={position.y} r="4" stroke="red" stroke-width="1" fill="red"/>
+                <circle cx={position.x} cy={position.y} r={TankConstants.values.BULLET_RAD} stroke="red" stroke-width="1" fill="red"/>
             </g>
         );
     }

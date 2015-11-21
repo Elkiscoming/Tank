@@ -3,10 +3,16 @@
  */
 var assign = require('object-assign');
 var TankConstants = {
-    UPDATE: 'upd',
-    KEY_UP: 'ku',
-    KEY_DOWN: 'kd',
-    NEW_BULLET: 'nb'
+    actions: {
+        UPDATE: 'upd',
+        KEY_UP: 'ku',
+        KEY_DOWN: 'kd',
+        NEW_BULLET: 'nb'
+    },
+    values: {
+        TANK_RAD: 20,
+        BULLET_RAD: 5
+    }
 };
 
 module.exports = TankConstants;

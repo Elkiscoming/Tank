@@ -15,6 +15,7 @@ var _tanks = [
             x: 50,
             y: 50
         },
+        isDead: false,
         angle: 0,
         maxV: 1,
         dir : 0
@@ -26,6 +27,7 @@ var _tanks = [
             x: 550,
             y: 50
         },
+        isDead: false,
         angle: 180,
         maxV: 1,
         dir : 0
@@ -34,15 +36,18 @@ var _tanks = [
 
 var _bullets = [];
 
-function createBullet(playerIndex){
+function isBulletInTank(tankIndex, bulletIndex){
+
+}
+function createBullet(tankIndex){
     var id = Date.now();
     _bullets[id] = {
-        playerID: playerIndex,
+        playerID: tankIndex,
         position: {
-            x: _tanks[playerIndex].position.x,
-            y: _tanks[playerIndex].position.y
+            x: _tanks[tankIndex].position.x,
+            y: _tanks[tankIndex].position.y
         },
-        angle: _tanks[playerIndex].angle
+        angle: _tanks[tankIndex].angle
     };
 }
 
@@ -90,7 +95,7 @@ var TankStore = assign({}, EventEmitter.prototype, {
         var number;
         var index;
         switch(action.actionType) {
-            case TankConstants.UPDATE:
+            case TankConstants.actions.UPDATE:
                 var angle = tank.angle / 180 * Math.PI;
                 for(index in _tanks) {
                     tank = _tanks[index];
@@ -121,16 +126,16 @@ var TankStore = assign({}, EventEmitter.prototype, {
                 }
                 TankStore.emitChange();
                 break;
-            case TankConstants.KEY_DOWN:
+            case TankConstants.actions.KEY_DOWN:
                 number = (1 << action.keyCode);
                 if((tank.dir >> action.keyCode) % 2 === 0)
                     tank.dir += number;
                 break;
-            case TankConstants.KEY_UP:
+            case TankConstants.actions.KEY_UP:
                 number = (1 << action.keyCode);
                 tank.dir -= number;
                 break;
-            case TankConstants.NEW_BULLET:
+            case TankConstants.actions.NEW_BULLET:
                 var playerIndex = action.playerIndex;
                 createBullet(playerIndex);
                 break;

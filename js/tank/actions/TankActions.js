@@ -12,24 +12,24 @@ var TankActions = {
      */
     update: function() {
         AppDispatcher.handleViewAction({
-            actionType: TankConstants.UPDATE
+            actionType: TankConstants.actions.UPDATE
         });
     },
     keyDown: function(keyCode) {
         AppDispatcher.handleViewAction({
-            actionType: TankConstants.KEY_DOWN,
+            actionType: TankConstants.actions.KEY_DOWN,
             keyCode: keyCode - 37
         });
     },
     keyUp: function(keyCode) {
         AppDispatcher.handleViewAction({
-            actionType: TankConstants.KEY_UP,
+            actionType: TankConstants.actions.KEY_UP,
             keyCode: keyCode - 37
         });
     },
     newBullet: function(playerIndex){
         AppDispatcher.handleViewAction({
-            actionType: TankConstants.NEW_BULLET,
+            actionType: TankConstants.actions.NEW_BULLET,
             playerIndex: playerIndex
         });
     }
