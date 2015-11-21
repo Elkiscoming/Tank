@@ -26,6 +26,12 @@ var TankActions = {
             actionType: TankConstants.KEY_UP,
             keyCode: keyCode - 37
         });
+    },
+    newBullet: function(playerIndex){
+        AppDispatcher.handleViewAction({
+            actionType: TankConstants.NEW_BULLET,
+            playerIndex: playerIndex
+        });
     }
 };
 

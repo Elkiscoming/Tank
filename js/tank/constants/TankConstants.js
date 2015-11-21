@@ -5,7 +5,8 @@ var assign = require('object-assign');
 var TankConstants = {
     UPDATE: 'upd',
     KEY_UP: 'ku',
-    KEY_DOWN: 'kd'
+    KEY_DOWN: 'kd',
+    NEW_BULLET: 'nb'
 };
 
 module.exports = TankConstants;

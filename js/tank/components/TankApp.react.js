@@ -3,12 +3,14 @@
  */
 var React = require('react');
 var Tank = require('./Tank.react');
+var Bullet = require('./Bullet.react');
 var TankStore = require('../stores/TankStore');
 var TankActions = require('../actions/TankActions');
 
 function getTankState() {
     return {
-        allTanks: TankStore.getAll()
+        allTanks: TankStore.getAll().tanks,
+        allBullets: TankStore.getAll().bullets
     };
 }
 
@@ -36,16 +38,26 @@ var TankApp = React.createClass({
      */
     render: function() {
         var allTanks = this.state.allTanks;
+        var allBullets = this.state.allBullets;
         var tanks = [];
+        var bullets = [];
         for(var index in allTanks){
             tanks[index] = (
                 <Tank position={allTanks[index].position} angle={allTanks[index].angle} />
             );
         }
+        var counter = 0;
+        for(index in allBullets){
+            bullets[counter] = (
+                <Bullet position={allBullets[index].position} />
+            );
+            counter ++;
+        }
         return (
             <div className="tank-trouble" onKeyDown={this._onKeyDown} onKeyUp={this._onKeyUp} tabIndex="0">
                 <svg width="1000" height="1000">
                     {tanks}
+                    {bullets}
                 </svg>
             </div>
         );
@@ -56,15 +68,20 @@ var TankApp = React.createClass({
     },
 
     _onKeyDown: function(event) {
-        if(event.keyCode >= 37 && event.keyCode <= 40)
+        if((event.keyCode >= 37 && event.keyCode <= 40)) {
             event.preventDefault();
-        TankActions.keyDown(event.keyCode);
+            TankActions.keyDown(event.keyCode);
+        } else if(event.keyCode === 32){
+            event.preventDefault();
+            TankActions.newBullet(0);
+        }
     },
 
     _onKeyUp: function(event) {
-        if(event.keyCode >= 37 && event.keyCode <= 40)
+        if(event.keyCode >= 37 && event.keyCode <= 40) {
             event.preventDefault();
-        TankActions.keyUp(event.keyCode);
+            TankActions.keyUp(event.keyCode);
+        }
     }
 
 });
